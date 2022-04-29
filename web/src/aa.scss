@@ -1,0 +1,318 @@
+// reset
+* {
+    // 防止加padding会撑大
+    box-sizing: border-box;
+    outline: none;
+}
+
+html {
+    // 1rem=1html的font-size
+    font-size: 13px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    // 行高随该行字体大小变
+    line-height: 1.2em;
+    background: #f1f1f1;
+    // font-weight: bold;
+}
+
+a {
+    color: #666;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+// color
+$colors:("primary":#db9e3f,
+    "dark":#222,
+    "dark-1":#343440,
+    "grey":#999,
+    "light":#f9f9f9,
+    "light-1":#d4d9de,
+    "black":#000,
+    "white":#fff,
+);
+//边框颜色变量(常用) 
+$border-color:map-get($colors, 'light-1');
+
+// 根据$color对象循环生成css样式
+@each $key,
+$value in $colors {
+
+    // 文字颜色
+    .text-#{$key} {
+        color: $value;
+    }
+
+    // 背景颜色
+    .bg-#{$key} {
+        background-color: $value;
+    }
+}
+
+// text
+@each $var in (left, center, right) {
+    .text-#{$var} {
+        text-align: $var;
+    }
+}
+
+// font-size
+// alt-s指定base。$base-font-size:13px;
+$font-sizes:(
+    xs:0.7692rem, //10px
+    sm:0.9231rem, //12px
+    md:1rem, //13px
+    lg:1.0769rem, //14px
+    xl:1.2308rem, //16px
+);
+
+@each $key,
+$value in $font-sizes {
+    .fs-#{$key} {
+        font-size: $value;
+    }
+}
+// text-ellipsis
+.text-ellipsis{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// flex
+.d-flex {
+    display: flex;
+}
+
+//主轴垂直 
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+// justify-content
+$flex-jc:(start:flex-start,
+    end:flex-end,
+    center:center,
+    between:space-between,
+    around:space-around,
+);
+
+@each $key,
+$value in $flex-jc {
+    .jc-#{$key} {
+        justify-content: $value
+    }
+}
+
+// align-items
+$flex-ai:(start:flex-start,
+    end:flex-end,
+    center:center,
+    stretch:stretch,
+);
+
+@each $key,
+$value in $flex-ai {
+    .ai-#{$key} {
+        align-items: $value
+    }
+}
+
+// 能缩能伸(grow,shrink随父元素大小)
+.flex-1 {
+    flex: 1
+}
+
+// spacing
+$spcing-types:(m:margin, p:padding);
+$spcing-direction:(t:top, r:right, b:bottom, l:left);
+$base-spcing-size:1rem;
+$spcing-sizes:(0:0, 1:0.25, 2:0.5, 3:1, 4:1.5, 5:3);
+
+@each $typeKey,
+$type in $spcing-types {
+
+    //  .m-0{margin: 0rem;}
+    @each $sizeKey,
+    $size in $spcing-sizes {
+        .#{$typeKey}-#{$sizeKey} {
+            #{$type}: $size*$base-spcing-size
+        }
+    }
+
+    //  .mx-0{margin-right/left: 0rem;}
+    @each $sizeKey,
+    $size in $spcing-sizes {
+        .#{$typeKey}x-#{$sizeKey} {
+            #{$type}-right: $size*$base-spcing-size;
+            #{$type}-left: $size*$base-spcing-size
+        }
+
+        //  .my-0{margin-top/bottom: 0rem;}
+        .#{$typeKey}y-#{$sizeKey} {
+            #{$type}-top: $size*$base-spcing-size;
+            #{$type}-bottom: $size*$base-spcing-size
+        }
+    }
+
+    //  .mt-0{margin-top: 0rem;}
+    @each $directionKey,
+    $direction in $spcing-direction {
+
+        @each $sizeKey,
+        $size in $spcing-sizes {
+            .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+                #{$type}-#{$direction}: $size*$base-spcing-size
+            }
+        }
+    }
+}
+
+// button
+.btn {
+    border: none;
+    border-radius: 0.1538rem;
+    // 从之前定义好的变量里找
+    font-size: map-get($font-sizes, 'sm');
+    padding: 0.2rem 0.6rem
+}
+
+.nav {
+    // 全部nav共有的
+    display: flex;
+    .nav-item {
+        // 普通nav-item
+        color:map-get($colors, 'dark-1');
+        border-bottom: 3px solid transparent;
+        &.active {
+            // 普通active的nav-item
+            color:map-get($colors, 'primary') ;
+            border-bottom-color: map-get($colors, 'primary');
+        }
+    }
+    // 反nav独有的
+    &.nav-revers{
+        .nav-item {
+            // 反nav的item
+            color:#fff;
+            border-bottom: 3px solid transparent;
+            &.active {
+                // 反nav的active
+                border-bottom-color: #fff;
+            }
+        }
+    }
+}
+
+// sprite
+.sprite {
+    // 不重复,左上角对齐
+    background: url(./assets/sprite.png) no-repeat 0 0;
+    // 原图是双倍像素
+    background-size: 28.8462rem;
+    display: inline-block;
+
+    // &该标签下缩小范围的元素
+    &.sprite-news {
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 63.546% 15.517%;
+    }
+
+    &.sprite-story {
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 90.483% 15.614%;
+    }
+
+    &.sprite-shop {
+        // 雪碧图元素窗口大小
+        width: 1.4615rem;
+        height: 1.6923rem;
+        // 雪碧图(背景图)定位
+        background-position: 36.746% 0.924%;
+    }
+
+    &.sprite-feel {
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 10.408% 15.517%;
+    }
+
+    &.sprite-newplayer {
+        // 雪碧图元素窗口大小
+        width: 1.5385rem;
+        height: 1.6154rem;
+        // 雪碧图(背景图)定位
+        background-position: 89.733% 1.266%;
+    }
+
+    &.sprite-grnerate {
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 36.467% 15.287%;
+    }
+
+    &.sprite-community {
+        // 雪碧图元素窗口大小
+        width: 1.8462rem;
+        height: 1.8462rem;
+        // 雪碧图(背景图)定位
+        background-position: 63.3% 0.927%;
+    }
+
+    &.sprite-camp {
+        // 雪碧图元素窗口大小
+        width: 2.3846rem;
+        height: 1.9231rem;
+        // 雪碧图(背景图)定位
+        background-position: 9.302% 0.813%;
+    }
+
+    &.sprite-weixin {
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 0 96.207%;
+    }
+
+    &.sprite-copies {
+        background: url(./assets/copies.png) no-repeat 0 0;
+        background-size: 1.6923rem;
+        // 雪碧图元素窗口大小
+        width: 1.7692rem;
+        height: 1.5385rem;
+        // 雪碧图(背景图)定位
+        background-position: 63.546% 15.517%;
+    }
+
+    &.sprite-rollup {
+        width: 0.7692rem;
+        height: 0.7692rem;
+        background-position: 38.577% 52.067%;
+    }
+}
